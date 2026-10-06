@@ -1,1 +1,195 @@
-@import "tailwindcss";:root{--paper:#FFF9F0;--ink:#173234;--teal:#0B9B93;--teal-deep:#0A5E59;--sun:#FFC53D;--pink:#FF6B8A;--line:rgba(23,50,52,.12)}html{scroll-behavior:smooth}body{background:var(--paper);color:var(--ink)}.font-display{font-family:"Baloo 2",system-ui,sans-serif}::selection{background:#0B9B93;color:#fff}.grain:after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27120%27 height=%27120%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence baseFrequency=%27.9%27/%3E%3C/filter%3E%3Crect width=%27120%27 height=%27120%27 filter=%27url(%23n)%27 opacity=%27.6%27/%3E%3C/svg%3E")}@keyframes marquee{to{transform:translateX(-50%)}}.animate-marquee{animation:marquee 24s linear infinite}.sticker{box-shadow:0 6px 0 rgba(23,50,52,.9)}.tape{position:absolute;top:-12px;left:50%;width:96px;height:26px;transform:translateX(-50%) rotate(-4deg);background:rgba(255,255,255,.8);border-left:1px dashed rgba(0,0,0,.15);border-right:1px dashed rgba(0,0,0,.15);box-shadow:0 2px 4px rgba(0,0,0,.12)}.paws{background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27110%27 height=%27110%27%3E%3Cg fill=%27%230B9B93%27 fill-opacity=%27.08%27%3E%3Cellipse cx=%2728%27 cy=%2734%27 rx=%2710%27 ry=%2712%27/%3E%3Cellipse cx=%2750%27 cy=%2734%27 rx=%2710%27 ry=%2712%27/%3E%3Cellipse cx=%2719%27 cy=%2754%27 rx=%2710%27 ry=%2712%27/%3E%3Cellipse cx=%2759%27 cy=%2754%27 rx=%2710%27 ry=%2712%27/%3E%3Cellipse cx=%2739%27 cy=%2768%27 rx=%2715%27 ry=%2712%27/%3E%3C/g%3E%3C/svg%3E")}@media (prefers-reduced-motion: reduce){.animate-marquee{animation:none}*{transition:none!important}}
+@import "tailwindcss";
+
+/*
+  PERSONALIDADE: institucional-confianca (servico local de confianca)
+  Decisao: dominio = servico local de confianca → personalidade Institucional/Corporativa
+  (primaria) com verbos do Editorial (secundaria): fade-up + clip-reveal.
+  Font pairing: font-friendly — Nunito Sans (corpo) + DM Serif Display (titulos) + Roboto Mono (fichas).
+  Easing primaria: --ease-quart-out (natural, fluido).
+  Escala: scale-editorial. Temperatura: clara papel/creme com teal da marca (#0E9B94).
+  Preloader: nao justificado.
+  Regra de forma (shape lock): botoes = pill total; cartoes/paines = 20px; sem mistura.
+
+  MOTION VERB EXCLUSIVO — "ficha-slide": a ficha (linha de prontuario / cartao de
+  registro) entra deslizando da esquerda com a régua lateral em teal se desenhando
+  (scaleY de 0 → 1) e o conteudo assentando sem salto. Usado no cartao de plantao do
+  hero e nas linhas do livro de servicos. Nao existe em nenhum outro projeto do catalogo.
+*/
+
+@theme {
+  --font-sans: "Nunito Sans", system-ui, sans-serif;
+  --font-display: "DM Serif Display", Georgia, serif;
+  --font-mono: "Roboto Mono", ui-monospace, monospace;
+
+  --color-paper: #faf6ee;
+  --color-paper-deep: #f1eadd;
+  --color-sand: #e7dcc4;
+  --color-ink: #122e2c;
+  --color-ink-soft: #3d5a57;
+  --color-teal: #0e9b94;
+  --color-teal-deep: #0a5e59;
+  --color-line: rgba(18, 46, 44, 0.14);
+
+  --ease-project: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-quart-out: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-teal);
+  color: #fff;
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* clip-reveal do titulo do hero */
+@keyframes clip-rise {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(26px);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.hero-title {
+  animation: clip-rise 0.9s var(--ease-project) both;
+}
+
+.hero-title .line-2 {
+  animation: clip-rise 0.9s var(--ease-project) 0.12s both;
+}
+
+/* ficha-slide (verbo exclusivo): régua lateral desenha + conteudo assenta */
+@keyframes ficha-slide {
+  from {
+    transform: translateX(-18px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes ficha-rule {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.ficha {
+  animation: ficha-slide 0.7s var(--ease-project) 0.25s both;
+}
+
+.ficha::before {
+  content: "";
+  display: block;
+  width: 4px;
+  align-self: stretch;
+  border-radius: 999px;
+  background: var(--color-teal);
+  transform-origin: top;
+  animation: ficha-rule 0.7s var(--ease-project) 0.25s both;
+}
+
+.service-row {
+  transition: background-color 0.3s var(--ease-project), padding-left 0.3s var(--ease-project);
+}
+
+.service-row:hover {
+  background: rgba(14, 155, 148, 0.07);
+}
+
+.service-row:hover .service-arrow {
+  transform: translate(4px, -4px);
+  color: var(--color-teal);
+}
+
+.service-arrow {
+  transition: transform 0.3s var(--ease-project), color 0.3s var(--ease-project);
+}
+
+.img-frame img {
+  transition: transform 0.6s var(--ease-project);
+}
+
+.img-frame:hover img {
+  transform: scale(1.03);
+}
+
+.btn-primary {
+  transition: background-color 0.25s var(--ease-project), transform 0.15s var(--ease-project);
+}
+
+.btn-primary:hover {
+  background: var(--color-teal-deep);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-ghost {
+  transition: background-color 0.25s var(--ease-project), color 0.25s var(--ease-project), transform 0.15s var(--ease-project);
+}
+
+.btn-ghost:hover {
+  background: var(--color-ink);
+  color: #fff;
+}
+
+.btn-ghost:active {
+  transform: scale(0.98);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--color-teal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hero-title,
+  .hero-title .line-2,
+  .ficha {
+    animation: none;
+  }
+  .ficha::before {
+    animation: none;
+  }
+  * {
+    transition: none !important;
+  }
+}
